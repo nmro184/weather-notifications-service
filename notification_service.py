@@ -2,10 +2,11 @@ from flask import Flask, jsonify
 from kafka import KafkaConsumer
 import json
 import threading
+import os
 
 app = Flask(__name__)
 
-KAFKA_BROKER = "localhost:9092"
+KAFKA_BROKER = os.getenv("KAFKA_BROKER", "kafka:9092")   
 TOPIC = "weather_topic"
 
 # Store messages in a list instead of blocking the Flask route
