@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-notifications-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weather-notifications-service
+  template:
+    metadata:
+      labels:
+        app: weather-notifications-service
+    spec:
+      imagePullSecrets: 
+        - name: ghcr-secret
+      containers:
+        - name: weather-notifications-service
+          image: ghcr.io/nimrod-s-weather-app/weather-notifications-service:latest
+          ports:
+            - containerPort: 5002
+          env:
+            - name: KAFKA_BROKER
+              value: "kafka:9092"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: weather-notifications-service
+spec:
+  selector:
+    app: weather-notifications-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5002
+  type: LoadBalancer
