@@ -1,4 +1,4 @@
-name: Deploy - Weather Notifications Service
+name: deploy - weather notifications service
 
 on:
   push:
