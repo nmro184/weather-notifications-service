@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: weather-notifications-service
-  namespace: argocd
+  namespace: weather-services
 spec:
   project: default
   source:
