@@ -12,8 +12,6 @@ spec:
       labels:
         app: weather-notifications-service
     spec:
-      imagePullSecrets: 
-        - name: ghcr-secret
       containers:
         - name: weather-notifications-service
           image: ghcr.io/nimrod-s-weather-app/weather-notifications-service:latest
