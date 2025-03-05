@@ -11,6 +11,7 @@ TOPIC = "weather_topic"
 
 # Store messages in a list instead of blocking the Flask route
 alerts = []
+weather_data = {}
 
 def consume_kafka():
     """Background thread that continuously consumes Kafka messages"""
@@ -41,6 +42,21 @@ def get_alerts():
     if alerts:
         return jsonify(alerts)
     return jsonify({"message": "No alerts yet"})
+
+@app.route("/weather", methods=["GET"])
+def get_weather():
+    """Return the weather condition and temperature"""
+    if weather_data:
+        condition = weather_data["weather"][0]["main"]
+        temperature = weather_data["main"]["temp"] - 273.15  # Convert from Kelvin to Celsius
+        weather_status = "clear" if condition not in ["Rain", "Storm"] else "raining"
+        
+        
+        return jsonify({
+            "weather": weather_status,
+            "temperature": temperature
+        })
+    return jsonify({"message": "No weather data yet"})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5002, debug=True)
