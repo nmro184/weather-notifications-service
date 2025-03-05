@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
         - name: weather-notifications-service
-          image: ghcr.io/nimrod-s-weather-app/weather-notifications-service:latest
+          image: ghcr.io/nimrod-s-weather-app/weather-notifications-service:${GITHUB_SHA}  
+          imagePullPolicy: Always
           ports:
             - containerPort: 5002
           env:

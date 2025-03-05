@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - master
-  workflow_dispatch: 
+  workflow_dispatch:  # Allows manual trigger
 
 jobs:
   build-and-push:
@@ -22,8 +22,10 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.GHCR_REPO_NOTIFICATIONS }}:latest .
+          docker build -t ${{ secrets.GHCR_REPO_NOTIFICATIONS }}:${{ github.sha }} .
+          # Tagging image with commit hash using github.sha
 
       - name: Push Docker image
         run: |
-          docker push ${{ secrets.GHCR_REPO_NOTIFICATIONS }}:latest
+          docker push ${{ secrets.GHCR_REPO_NOTIFICATIONS }}:${{ github.sha }}
+          # Pushing the image with commit hash as the tag
