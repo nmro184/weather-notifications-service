@@ -7,7 +7,7 @@ spec:
   source:
     repoURL: "https://github.com/Nimrod-s-weather-app/weather-notifications-service.git"
     targetRevision: main
-    path: "k8s"  
+    path: "charts"  
   destination:
     server: https://kubernetes.default.svc
     namespace: default
