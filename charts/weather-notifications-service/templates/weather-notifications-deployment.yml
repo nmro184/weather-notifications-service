@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: weather-notifications-service
-          image: ghcr.io/nimrod-s-weather-app/weather-notifications-service:${GITHUB_SHA}  
+          image: ghcr.io/nimrod-s-weather-app/weather-notifications-service:{{ .Values.image.tag }} # Dynamic tag
           imagePullPolicy: Always
           ports:
             - containerPort: 5002
