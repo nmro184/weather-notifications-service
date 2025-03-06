@@ -1,5 +1,8 @@
 name: deploy - weather notifications service
 
+permissions:
+  contents: write  # Allows pushing changes to the repository
+
 on:
   push:
     branches:
@@ -30,13 +33,22 @@ jobs:
           docker push ${{ secrets.GHCR_REPO_NOTIFICATIONS }}:${{ github.sha }}
           # Pushing the image with commit hash as the tag
 
-      - name: Update Helm chart with new image tag
+      - name: Update Helm chart with new image tag using yq
         run: |
-            sed -i 's|tag: "latest"|tag: "${{ github.sha }}"|g' ./charts/weather-notifications-service/values.yaml
-      - name: Commit and push updated deployment YAML
+          echo "GITHUB_WORKSPACE is: ${{ github.workspace }}"
+          echo "Listing files in ${{ github.workspace }}"
+          ls ${{ github.workspace }}
+          echo "Listing files in ${{ github.workspace }}/charts"
+          ls ${{ github.workspace }}/charts
+          echo "Listing files in ${{ github.workspace }}/charts/weather-notifications-service"
+          ls ${{ github.workspace }}/charts/weather-notifications-service
+          yq eval '.image.tag = strenv(GITHUB_SHA)' -i ${{ github.workspace }}/charts/weather-notifications-service/values.yaml
+
+      - name: Commit and push updated values.yaml
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add ./charts/weather-notifications-service/templates/notifications-service-deployment.yml
+          git remote set-url origin https://github.com/${{ github.repository }}.git
+          git add ${{ github.workspace }}/charts/weather-notifications-service/values.yaml
           git commit -m "Update image tag to ${{ github.sha }}"
-          git push
+          git push https://x-access-token:${{ secrets.GHCR_PASSWORD }}@github.com/${{ github.repository }}.git HEAD:master
