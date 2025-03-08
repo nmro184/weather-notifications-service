@@ -15,13 +15,13 @@ spec:
     spec:
       containers:
         - name: weather-notifications-service
-          image: ghcr.io/nimrod-s-weather-app/weather-notifications-service:{{ .Values.image.tag }} # Dynamic tag
+          image: ghcr.io/nimrod-s-weather-app/weather-notifications-service:v1.0.0 
           imagePullPolicy: Always
           ports:
             - containerPort: 5002
           env:
             - name: KAFKA_BROKER
-              value: "kafka:9092"
+              value: "kafka.weather-infra.svc.cluster.local:9092" # Full Kafka broker URL with namespace
 
 ---
 apiVersion: v1
