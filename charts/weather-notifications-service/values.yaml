@@ -1,3 +1,3 @@
 image:
   repository: ghcr.io/nimrod-s-weather-app/weather-notifications-service
-  tag: 4bb235ff0efae5eaf51cf9d21b4146e2841c0c6e # overridden in the pipeline
+  tag: 9d371c9b69c5bf06ea2bf59d381989da3756f895 # overridden in the pipeline
