@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
   repository: ghcr.io/nimrod-s-weather-app/weather-notifications-service
-  tag: "6fa63955803f2a30d36e89cccb36937ad3adc8fe"
+  tag: "eb62daa25bf3b1a1aae2a9bf3b3633c46fb88d66"
   pullPolicy: Always
 service:
   type: LoadBalancer
