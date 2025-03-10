@@ -1,3 +1,17 @@
+replicaCount: 1
+
 image:
   repository: ghcr.io/nimrod-s-weather-app/weather-notifications-service
-  tag: e2f07e3e2812df8991c769615c8a894e6096eda0 # overridden in the pipeline
+  tag: "v1.0.0"
+  pullPolicy: Always
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 5002
+
+env:
+  KAFKA_BROKER: "kafka.weather-infra.svc.cluster.local:9092"
+  API_KEY: "d61f6140b64e3fe3bf5ed1a2cf7a411c"  # This can be moved to a secret later if needed
+
+resources: {}
