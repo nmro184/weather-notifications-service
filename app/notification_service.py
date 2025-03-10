@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from kafka import KafkaConsumer
+from kafka import KafkaConsumer, KafkaProducer
 import json
 import threading
 import os
@@ -25,7 +25,9 @@ def consume_kafka():
             bootstrap_servers=KAFKA_BROKER,
             value_deserializer=lambda x: json.loads(x.decode("utf-8")),
             group_id="weather-service-group",
-            auto_offset_reset='earliest'  # Ensure to start from the earliest message if needed
+            auto_offset_reset='earliest',  # Start from the earliest message if needed
+            enable_auto_commit=True,  # Enable automatic offset commit
+            value_deserializer=lambda x: json.loads(x.decode("utf-8")),
         )
 
         for message in consumer:
@@ -44,7 +46,11 @@ def consume_kafka():
                     logger.info(f"Alert generated: {alert_message}")
 
                 # Save the latest weather data
-                weather_data = message.value
+                global weather_data
+                weather_data = message.value  # Update global weather data
+
+                # Commit the offset after processing the message
+                consumer.commit()
 
             else:
                 logger.error("Invalid weather data structure received!")
