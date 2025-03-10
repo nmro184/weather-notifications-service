@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from kafka import KafkaConsumer, KafkaProducer
+from kafka import KafkaConsumer
 import json
 import threading
 import os
@@ -27,7 +27,6 @@ def consume_kafka():
             group_id="weather-service-group",
             auto_offset_reset='earliest',  # Start from the earliest message if needed
             enable_auto_commit=True,  # Enable automatic offset commit
-            value_deserializer=lambda x: json.loads(x.decode("utf-8")),
         )
 
         for message in consumer:
