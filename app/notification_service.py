@@ -24,6 +24,7 @@ def consume_kafka():
         TOPIC,
         bootstrap_servers=KAFKA_BROKER,
         value_deserializer=lambda x: json.loads(x.decode("utf-8")),
+        group_id="weather-service-group"
     )
     for message in consumer:
         logger.debug(f"Consumed message from Kafka: {message.value}")  # Log received message
